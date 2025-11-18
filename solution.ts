@@ -5,29 +5,18 @@ const formatValue = (
     return value.toUpperCase();
   } else if (typeof value === 'number') {
     return value * 10;
-  } else if (typeof value === 'boolean') {
+  } else {
     return !value;
-  } else {
-    return 'Wrong Input';
   }
 };
 
-// console.log(formatValue('hello'));
-// console.log(formatValue(5));
-// console.log(formatValue(true));
-
-const getLength = <T>(value: string | T[]): number | string => {
-  if (typeof value === 'string') {
-    return value.length;
-  } else if (Array.isArray(value)) {
+const getLength = (value: string | number[]): number => {
+  if (Array.isArray(value)) {
     return value.length;
   } else {
-    return 'Wrong Input';
+    return value.length;
   }
 };
-
-// console.log(getLength('typescript'));
-// console.log(getLength([10, 20, 30, 40]));
 
 class Person {
   name: string;
@@ -38,30 +27,93 @@ class Person {
     this.age = age;
   }
   getDetails(): string {
-    return `Name: ${this.name}, Age: ${this.age}`;
+    return `'Name: ${this.name}, Age: ${this.age}'`;
   }
 }
-
-const person1 = new Person('John Doe', 30);
-const person2 = new Person('Alice', 25);
-
-// console.log(person1.getDetails());
-// console.log(person2.getDetails());
 
 type BookType = {
   title: string;
   rating: number;
 };
 
-const filterByRating = (value: BookType[]):BookType[] => {
+const filterByRating = (value: BookType[]): BookType[] => {
   let filterBook = value.filter(item => item.rating >= 4);
   return filterBook;
 };
 
-const books = [
-  { title: 'Book A', rating: 4.5 },
-  { title: 'Book B', rating: 3.2 },
-  { title: 'Book C', rating: 5.0 },
-];
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  isActive: boolean;
+};
+const filterActiveUsers = (users: User[]): User[] => {
+  let activeUser = users.filter(u => u.isActive === true);
+  return activeUser;
+};
 
-console.log(filterByRating(books));
+interface Book {
+  title: string;
+  author: string;
+  publishedYear: number;
+  isAvailable: boolean;
+}
+
+const printBookDetails = (book: Book): void => {
+  console.log(
+    `Title: ${book.title}, Author: ${book.author}, Published: ${
+      book.publishedYear
+    }, Available: ${book.isAvailable === true ? 'Yes' : 'No'}`
+  );
+};
+
+const getUniqueValues = (
+  arr1: (number | string)[],
+  arr2: (number | string)[]
+): (number | string)[] => {
+  const output: (number | string)[] = [];
+
+  for (let i = 0; i < arr1.length; i++) {
+    let found = false;
+    for (let j = 0; j < output.length; j++) {
+      if (output[j] === arr1[i]) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      output[output.length] = arr1[i];
+    }
+  }
+
+  for (let i = 0; i < arr2.length; i++) {
+    let found = false;
+    for (let j = 0; j < output.length; j++) {
+      if (output[j] === arr2[i]) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      output[output.length] = arr2[i];
+    }
+  }
+
+  return output;
+};
+
+type Product = {
+  name: string;
+  price: number;
+  quantity: number;
+  discount?: number;
+};
+const calculateTotalPrice = (products: Product[]): number => {
+  return products.reduce((total, product) => {
+    const productTotal = product.price * product.quantity;
+    const discountAmount = product.discount
+      ? (product.discount / 100) * productTotal
+      : 0;
+    return total + (productTotal - discountAmount);
+  }, 0);
+};
