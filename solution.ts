@@ -30,17 +30,19 @@ class Person {
     return `'Name: ${this.name}, Age: ${this.age}'`;
   }
 }
-
-type Rating = 0 | 0.5 | 1.0 | 1.5 | 2.0 | 2.5 | 3.0 | 3.5 | 4.0 | 4.5 | 5.0
 type BookType = {
   title: string;
-  rating: Rating;
+  rating: number;
 };
 
 const filterByRating = (value: BookType[]): BookType[] => {
-  let filterBook = value.filter(item => item.rating >= 4);
-  return filterBook;
+  const isValid = value.every(book => book.rating >= 0 && book.rating <= 5);
+  if (!isValid) {
+    return [];
+  }
+  return value.filter(item => item.rating >= 4);
 };
+
 
 type User = {
   id: number;
@@ -52,7 +54,6 @@ const filterActiveUsers = (users: User[]): User[] => {
   let activeUser = users.filter(u => u.isActive === true);
   return activeUser;
 };
-
 
 interface Book {
   title: string;
